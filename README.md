@@ -1,4 +1,4 @@
-# e_reg_app
+# ornek2
 
 A new Flutter project.
 

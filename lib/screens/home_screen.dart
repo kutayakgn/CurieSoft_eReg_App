@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/screens/ListPage/listpage.dart';
+import 'package:flutter_login_ui/screens/QRcodePage/QR_main.dart';
+import 'package:flutter_login_ui/screens/signaturePage/signature.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -49,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ListScreen()),
+            MaterialPageRoute(builder: (context) => QRcode_Page()),
           );
         },
         padding: EdgeInsets.all(15.0),
@@ -80,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ListScreen()),
+            MaterialPageRoute(builder: (context) => SignaturePage()), //classi degistir
           );
         },
         padding: EdgeInsets.all(15.0),
