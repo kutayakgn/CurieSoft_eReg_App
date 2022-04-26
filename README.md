@@ -1,4 +1,4 @@
-# ornek2
+# ereg_application
 
 A new Flutter project.
 

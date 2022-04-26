@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
+
+import 'home_screen.dart';
+
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,6 +14,10 @@ class RegisterScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<RegisterScreen> {
   bool _rememberMe = false;
+
+  final _fullName = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
 
   Widget _buildNameTF() {
     return Column(
@@ -25,6 +33,7 @@ class _LoginScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _fullName,
             keyboardType: TextInputType.name,
             style: TextStyle(
               color: Colors.white,
@@ -60,6 +69,7 @@ class _LoginScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _email,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -95,6 +105,7 @@ class _LoginScreenState extends State<RegisterScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _password,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -122,7 +133,19 @@ class _LoginScreenState extends State<RegisterScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () => print('Login Button Pressed'),
+        onPressed: () {
+          FirebaseAuth.instance
+              .createUserWithEmailAndPassword(
+              email: _email.text,
+              password: _password.text)
+              .then((value) {
+            print("New Account Created");
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => HomeScreen()));
+          }).onError((error, stackTrace) {
+            print("Error ${error.toString()}");
+          });
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -145,10 +168,8 @@ class _LoginScreenState extends State<RegisterScreen> {
   Widget _buildSignupBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
-        );
+        Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LoginScreen()));
       },
       child: RichText(
         textAlign: TextAlign.center,

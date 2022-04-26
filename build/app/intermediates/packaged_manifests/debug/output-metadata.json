@@ -4,7 +4,7 @@
     "type": "PACKAGED_MANIFESTS",
     "kind": "Directory"
   },
-  "applicationId": "com.example.ornek2",
+  "applicationId": "com.example.ereg_application",
   "variantName": "debug",
   "elements": [
     {

@@ -1,4 +1,4 @@
 io/flutter/plugins/GeneratedPluginRegistrant.java
  io.flutter.plugins.GeneratedPluginRegistrant
-com/example/ornek2/BuildConfig.java
- com.example.ornek2.BuildConfig
+com/example/ereg_application/BuildConfig.java
+ com.example.ereg_application.BuildConfig
