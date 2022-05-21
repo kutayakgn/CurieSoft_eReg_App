@@ -83,7 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SignaturePage()), //classi degistir
+            MaterialPageRoute(
+                builder: (context) => SignaturePage()), //classi degistir
           );
         },
         padding: EdgeInsets.all(15.0),
@@ -123,9 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     end: Alignment.bottomCenter,
                     colors: [
                       Color(0xFF22577E),
-                      Color(0xFF22577E),
-                      Color(0xFF22577E),
-                      Color(0xFF22577E),
+                      Color.fromARGB(255, 51, 120, 170),
+                      Color.fromARGB(255, 104, 174, 224),
+                      Color.fromARGB(255, 121, 153, 177),
                     ],
                     stops: [0.1, 0.4, 0.7, 0.9],
                   ),
@@ -137,13 +138,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 120.0,
+                    vertical: 40.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(
-                        height: 30.0,
+                      Text(
+                        "Wellcome \nTo \nCurieSoft Events",
+                        style: TextStyle(
+                            fontSize: 35,
+                            color: Colors.white,
+                            fontFamily: 'Fred'),
+                        textAlign: TextAlign.center,
                       ),
                       _buildListButton(),
                       _buildQRButton(),

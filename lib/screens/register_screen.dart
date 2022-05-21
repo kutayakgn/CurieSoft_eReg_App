@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'home_screen.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -127,24 +127,56 @@ class _LoginScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildLoginBtn() {
+  Widget _buildSignUpBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-              email: _email.text,
-              password: _password.text)
-              .then((value) {
-            print("New Account Created");
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomeScreen()));
-          }).onError((error, stackTrace) {
-            print("Error ${error.toString()}");
-          });
+          FirebaseFirestore.instance.collection("Register Requests").add({
+            "FullName": _fullName.text,
+            "email": _email.text,
+            "password": _password.text,
+          }).then((value) => print("Request Sent"));
+
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    backgroundColor: Color(0xFF22577E),
+                    title: Text(
+                      'Register Request Successfully Created',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    actions: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(16.0),
+                                primary: Colors.white,
+                                textStyle: const TextStyle(fontSize: 20),
+                              ),
+                              onPressed: () => {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginScreen())),
+                              },
+                              child: Text('OK',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  )),
+                            )
+                          ])
+                    ],
+                  ));
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
@@ -165,11 +197,11 @@ class _LoginScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildSignupBtn() {
+  Widget _buildAlreadyBtn() {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context) => LoginScreen()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
       },
       child: RichText(
         textAlign: TextAlign.center,
@@ -243,8 +275,8 @@ class _LoginScreenState extends State<RegisterScreen> {
                         height: 30.0,
                       ),
                       _buildPasswordTF(),
-                      _buildLoginBtn(),
-                      _buildSignupBtn(),
+                      _buildSignUpBtn(),
+                      _buildAlreadyBtn(),
                     ],
                   ),
                 ),

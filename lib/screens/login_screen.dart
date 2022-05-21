@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/screens/home_screen.dart';
+import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/screens/register_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 
@@ -138,18 +139,16 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: () {
           FirebaseAuth.instance
               .signInWithEmailAndPassword(
-              email: _emailForLogin.text,
-              password: _LoginPassword.text)
+                  email: _emailForLogin.text, password: _LoginPassword.text)
               .then((value) {
             print("Existing account signed in.");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
+              MaterialPageRoute(builder: (context) => EventListScreen()),
             );
           }).onError((error, stackTrace) {
             print("Error ${error.toString()}");
           });
-
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
