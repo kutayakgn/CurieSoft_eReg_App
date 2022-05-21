@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_login_ui/screens/home_screen.dart';
@@ -11,6 +12,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
+
+  final _emailForLogin = TextEditingController();
+  final _LoginPassword = TextEditingController();
 
   Widget _buildEmailTF() {
     return Column(
@@ -26,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _emailForLogin,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.white,
@@ -61,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _LoginPassword,
             obscureText: true,
             style: TextStyle(
               color: Colors.white,
@@ -85,9 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildForgotPasswordBtn() {
     return Container(
       alignment: Alignment.centerRight,
-      child: FlatButton(
+      child: TextButton(
         onPressed: () => print('Forgot Password Button Pressed'),
-        padding: EdgeInsets.only(right: 0.0),
+        //padding: EdgeInsets.only(right: 0.0),
         child: Text(
           'Forgot Password?',
           style: kLabelStyle,
@@ -109,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               activeColor: Colors.white,
               onChanged: (value) {
                 setState(() {
-                  _rememberMe = value;
+                  _rememberMe = value!;
                 });
               },
             ),
@@ -130,10 +136,20 @@ class _LoginScreenState extends State<LoginScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-          );
+          FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+              email: _emailForLogin.text,
+              password: _LoginPassword.text)
+              .then((value) {
+            print("Existing account signed in.");
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          }).onError((error, stackTrace) {
+            print("Error ${error.toString()}");
+          });
+
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

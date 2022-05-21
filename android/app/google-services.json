@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "735753361065",
+    "project_id": "ereg-application",
+    "storage_bucket": "ereg-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735753361065:android:072d50c6c667aa697bbbb8",
+        "android_client_info": {
+          "package_name": "com.example.ereg_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735753361065-6h4a8p9nbrb69kblhic930uki59vndar.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAilxCe_D-ylOLJ1b9gmjba0dAVOSA4-3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735753361065-6h4a8p9nbrb69kblhic930uki59vndar.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

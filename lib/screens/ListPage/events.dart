@@ -6,5 +6,5 @@ class Events {
   String content;
 
   Events(
-      {this.title, this.level, this.indicatorValue, this.price, this.content});
+      {required this.title, required this.level, required this.indicatorValue, required this.price, required this.content});
 }

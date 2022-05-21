@@ -1,4 +1,4 @@
-# e_reg_app
+# ereg_application
 
 A new Flutter project.
 
