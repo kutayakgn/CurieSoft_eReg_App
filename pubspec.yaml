@@ -51,6 +51,7 @@ flutter:
    - assets/logos/facebook.jpg
    - assets/logos/google.jpg
    - images/QRIcon.png
+   - images/Signature.png
 
 
   fonts:
