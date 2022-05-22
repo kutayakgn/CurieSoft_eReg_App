@@ -8,27 +8,28 @@ class EventListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: koyumavi,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: InkWell(
-          child: Icon(Icons.arrow_back),
-          onTap: () {
-            Navigator.pop(context);
-          },
+        appBar: AppBar(
+          backgroundColor: koyumavi,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            child: Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
-      ),
-      body: Column(
-        children: <Widget>[
-          EventListTopPart(),
-          FlightCard(),
-          FlightCard(),
-          FlightCard(),
-          FlightCard(),
-        ],
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              EventListTopPart(),
+              SizedBox(
+                height: 40,
+              ),
+              _ListPage(),
+            ],
+          ),
+        ));
   }
 }
 
@@ -185,4 +186,64 @@ class FlightCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ListPage extends StatefulWidget {
+  @override
+  _ListPageState createState() => _ListPageState();
+}
+
+class _ListPageState extends State<_ListPage> {
+  Future getEvents() async {
+    var firestore = FirebaseFirestore.instance;
+    QuerySnapshot qn = await firestore.collection("Events").get();
+    return qn.docs;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('Events').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Text("Loading..."),
+              );
+            } else {
+              return Container(
+                  alignment: Alignment.center,
+                  height: 600,
+                  child: ListView(
+                    children: snapshot.data!.docs.map((document) {
+                      return Center(
+                        child: Container(
+                          margin: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: myBoxDecoration(),
+                          width: MediaQuery.of(context).size.width / 0.7,
+                          height: MediaQuery.of(context).size.height / 9,
+                          child: Text("Title: " + document['Program Topic']),
+                        ),
+                      );
+                    }).toList(),
+                  ));
+            }
+          }),
+    );
+  }
+}
+
+BoxDecoration myBoxDecoration() {
+  return BoxDecoration(
+    color: Color.fromARGB(255, 125, 165, 201),
+    border: Border.all(
+      width: 3.0,
+      color: Color.fromARGB(255, 125, 165, 201),
+    ),
+    borderRadius: BorderRadius.all(
+        Radius.circular(10.0) //                 <--- border radius here
+        ),
+  );
 }
