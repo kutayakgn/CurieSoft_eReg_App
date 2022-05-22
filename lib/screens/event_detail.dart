@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/newhome.dart';
+import 'package:flutter_login_ui/screens/signaturePage/signature.dart';
 import 'package:flutter_login_ui/utilities/CustomShapeClipper.dart';
-
+import 'package:signature/signature.dart';
 import '../utilities/constants.dart';
 
 class EventDetailScreen extends StatelessWidget {
@@ -25,10 +26,41 @@ class EventDetailScreen extends StatelessWidget {
             children: <Widget>[
               EventDetailTopPart(),
               DetailPage(),
+              SignButton(),
             ],
           ),
         ));
   }
+}
+class SignButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: koyumavi,
+
+
+      child: Ink(
+        decoration: const ShapeDecoration(
+          color: Colors.white,
+          shape: CircleBorder(),
+        ),
+        child: IconButton(
+
+          icon: Icon(Icons.add, ),
+          color: Colors.white,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return SignaturePage();
+             }),
+            );
+               },
+
+      ),
+
+    ),
+    );
+  }
+
 }
 
 class EventDetailTopPart extends StatelessWidget {

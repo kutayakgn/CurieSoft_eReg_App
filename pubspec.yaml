@@ -25,15 +25,16 @@ dependencies:
   cupertino_icons: ^0.1.2
   # firebase auth and core
   firebase_core: ^1.14.1
-  firebase_auth: ^3.3.14
+  firebase_auth: 
 
   flutter_svg: ^1.0.3
   signature: ^5.0.0
   hand_signature: ^2.1.1
  # barcode_scan: any
   qr_flutter: ^4.0.0
-  path_provider: ^2.0.9
-  cloud_firestore: ^3.1.15
+  path_provider:
+  cloud_firestore:
+  search_page:
 dev_dependencies:
   flutter_test:
     sdk: flutter

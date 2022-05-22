@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/event_detail.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
-
 import '../utilities/CustomShapeClipper.dart';
 import 'QRcodePage/QR_main.dart';
 
@@ -30,11 +29,13 @@ class EventListScreen extends StatelessWidget {
                 height: 40,
               ),
               _ListPage(),
+
             ],
           ),
         ));
   }
 }
+
 
 class EventListTopPart extends StatelessWidget {
   final _searchevent = TextEditingController();
@@ -149,6 +150,7 @@ class _ListPageState extends State<_ListPage> {
                   ));
             }
           }),
+
     );
   }
 }
