@@ -50,6 +50,7 @@ flutter:
   assets:
    - assets/logos/facebook.jpg
    - assets/logos/google.jpg
+   - images/QRIcon.png
 
 
   fonts:

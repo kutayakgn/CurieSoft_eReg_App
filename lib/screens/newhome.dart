@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/screens/QRcodePage/QR_scanning.dart';
 import 'package:flutter_login_ui/screens/event_detail.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 import '../utilities/CustomShapeClipper.dart';
@@ -14,6 +15,19 @@ class EventListScreen extends StatelessWidget {
           backgroundColor: koyumavi,
           elevation: 0.0,
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: ImageIcon(
+                AssetImage("images/QRIcon.png"),
+                 ),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ScanPage();
+                }),
+                );
+              },
+            )
+          ],
           leading: InkWell(
             child: Icon(Icons.arrow_back),
             onTap: () {
