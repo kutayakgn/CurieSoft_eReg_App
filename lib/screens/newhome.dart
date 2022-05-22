@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_ui/screens/event_detail.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 
 import '../utilities/CustomShapeClipper.dart';
+import 'QRcodePage/QR_main.dart';
 
 class EventListScreen extends StatelessWidget {
+  static var chosenevent;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,112 +97,12 @@ class EventListTopPart extends StatelessWidget {
   }
 }
 
-class FlightCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Stack(
-        children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(right: 16.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(10.0),
-              ),
-              border: Border.all(color: Colors.black),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        'Event Name: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 4.0,
-                      ),
-                      Text(
-                        "Event 1",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: -8.0,
-                    children: <Widget>[
-                      Text(
-                        "Speaker",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey),
-                      ),
-                      Text(
-                        "Date",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 10.0,
-            right: 0.0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: Text(
-                'Time',
-                style: TextStyle(
-                    color: acikmavi,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              decoration: BoxDecoration(
-                color: acikmavi,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
 class _ListPage extends StatefulWidget {
   @override
   _ListPageState createState() => _ListPageState();
 }
 
 class _ListPageState extends State<_ListPage> {
-  Future getEvents() async {
-    var firestore = FirebaseFirestore.instance;
-    QuerySnapshot qn = await firestore.collection("Events").get();
-    return qn.docs;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -218,15 +121,30 @@ class _ListPageState extends State<_ListPage> {
                   child: ListView(
                     children: snapshot.data!.docs.map((document) {
                       return Center(
+                          child: GestureDetector(
+                        onTap: () {
+                          EventListScreen.chosenevent =
+                              document['Program Topic'];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EventDetailScreen()),
+                          );
+                        },
                         child: Container(
-                          margin: const EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.fromLTRB(20.0, 10, 20, 0),
                           padding: const EdgeInsets.all(10.0),
+                          alignment: Alignment.center,
                           decoration: myBoxDecoration(),
                           width: MediaQuery.of(context).size.width / 0.7,
-                          height: MediaQuery.of(context).size.height / 9,
-                          child: Text("Title: " + document['Program Topic']),
+                          height: MediaQuery.of(context).size.height / 10,
+                          child: Text(document['Program Topic'],
+                              style: TextStyle(
+                                  color: Color.fromARGB(179, 0, 30, 70),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 19.0)),
                         ),
-                      );
+                      ));
                     }).toList(),
                   ));
             }
@@ -237,10 +155,10 @@ class _ListPageState extends State<_ListPage> {
 
 BoxDecoration myBoxDecoration() {
   return BoxDecoration(
-    color: Color.fromARGB(255, 125, 165, 201),
+    color: Color.fromARGB(255, 197, 223, 245),
     border: Border.all(
       width: 3.0,
-      color: Color.fromARGB(255, 125, 165, 201),
+      color: Color.fromARGB(255, 197, 223, 245),
     ),
     borderRadius: BorderRadius.all(
         Radius.circular(10.0) //                 <--- border radius here
