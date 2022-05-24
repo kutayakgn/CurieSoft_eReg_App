@@ -6,53 +6,60 @@ import 'package:flutter_login_ui/utilities/constants.dart';
 import '../utilities/CustomShapeClipper.dart';
 import 'QRcodePage/QR_main.dart';
 
-class EventListScreen extends StatelessWidget {
+class EventList extends StatefulWidget {
+  @override
+  EventListScreen createState() => EventListScreen();
+}
+
+class EventListScreen extends State<EventList> {
   static var chosenevent;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: koyumavi,
-          elevation: 0.0,
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: ImageIcon(
-                AssetImage("images/QRIcon.png"),
-                 ),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: koyumavi,
+        elevation: 0.0,
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: ImageIcon(
+              AssetImage("images/QRIcon.png"),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
                   return ScanPage();
                 }),
-                );
-              },
-            )
-          ],
-          leading: InkWell(
-            child: Icon(Icons.arrow_back),
-            onTap: () {
-              Navigator.pop(context);
+              );
             },
-          ),
+          )
+        ],
+        leading: InkWell(
+          child: Icon(Icons.arrow_back),
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              EventListTopPart(),
-              SizedBox(
-                height: 40,
-              ),
-              _ListPage(),
-
-            ],
-          ),
-        ));
+      ),
+      body: Column(
+        children: <Widget>[
+          EventListTop(),
+          _ListPage(),
+        ],
+      ),
+    );
   }
 }
 
+class EventListTop extends StatefulWidget {
+  @override
+  EventListTopPart createState() => EventListTopPart();
+}
 
-class EventListTopPart extends StatelessWidget {
-  final _searchevent = TextEditingController();
+class EventListTopPart extends State<EventListTop> {
+  static String searchtext = "";
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -64,14 +71,13 @@ class EventListTopPart extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [koyumavi, koyumavi])),
-            height: 161.0,
+            height: 100.0,
           ),
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 15.0),
             Text(
               "CurieSoft Events",
               style: TextStyle(
@@ -80,31 +86,9 @@ class EventListTopPart extends StatelessWidget {
                 fontFamily: 'Fred',
               ),
             ),
-            SizedBox(height: 50.0),
-            Container(
-              alignment: Alignment.center,
-              decoration: kBoxDecorationStyle,
-              height: 60.0,
-              width: 350,
-              child: TextField(
-                controller: _searchevent,
-                keyboardType: TextInputType.emailAddress,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'OpenSans',
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 12.0),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  hintText: 'Search Event',
-                  hintStyle: kHintTextStyle,
-                ),
-              ),
-            ),
+            SizedBox(
+              height: 50,
+            )
           ],
         )
       ],
@@ -118,28 +102,83 @@ class _ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<_ListPage> {
+  CollectionReference allCollection =
+      FirebaseFirestore.instance.collection('Events');
+  List<DocumentSnapshot> documents = [];
+
+  TextEditingController _searchController = TextEditingController();
+  String searchText = '';
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Events').snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Text("Loading..."),
-              );
-            } else {
-              return Container(
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          width: 350,
+          child: TextField(
+            onChanged: (value) {
+              setState(() {
+                searchText = value;
+                print(value);
+              });
+            },
+            controller: _searchController,
+            keyboardType: TextInputType.text,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 12.0),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              hintText: 'Search Event',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+        SingleChildScrollView(
+          child: Container(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: allCollection.snapshots(),
+              builder: (ctx, streamSnapshot) {
+                if (streamSnapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.blue,
+                  ));
+                }
+                documents = streamSnapshot.data!.docs;
+                //todo Documents list added to filterTitle
+                if (searchText.length > 0) {
+                  documents = documents.where((element) {
+                    return element
+                        .get('Program Topic')
+                        .toString()
+                        .toLowerCase()
+                        .contains(searchText.toLowerCase());
+                  }).toList();
+                }
+                return Container(
                   alignment: Alignment.center,
-                  height: 600,
-                  child: ListView(
-                    children: snapshot.data!.docs.map((document) {
-                      return Center(
-                          child: GestureDetector(
+                  height: 440,
+                  margin: EdgeInsets.all(20),
+                  child: ListView.separated(
+                    itemCount: documents.length,
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider();
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
                         onTap: () {
                           EventListScreen.chosenevent =
-                              document['Program Topic'];
+                              documents[index]['Program Topic'];
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -152,19 +191,22 @@ class _ListPageState extends State<_ListPage> {
                           alignment: Alignment.center,
                           decoration: myBoxDecoration(),
                           width: MediaQuery.of(context).size.width / 0.7,
-                          height: MediaQuery.of(context).size.height / 10,
-                          child: Text(document['Program Topic'],
+                          height: MediaQuery.of(context).size.height / 12,
+                          child: Text(documents[index]['Program Topic'],
                               style: TextStyle(
                                   color: Color.fromARGB(179, 0, 30, 70),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 19.0)),
                         ),
-                      ));
-                    }).toList(),
-                  ));
-            }
-          }),
-
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        )
+      ],
     );
   }
 }

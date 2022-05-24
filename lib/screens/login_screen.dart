@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
             print("Existing account signed in.");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => EventListScreen()),
+              MaterialPageRoute(builder: (context) => EventList()),
             );
           }).onError((error, stackTrace) {
             print("Error ${error.toString()}");

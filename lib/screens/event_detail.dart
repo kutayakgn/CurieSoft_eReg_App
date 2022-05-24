@@ -32,37 +32,34 @@ class EventDetailScreen extends StatelessWidget {
         ));
   }
 }
+
 class SignButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       color: koyumavi,
-
-
       child: Ink(
         decoration: const ShapeDecoration(
           color: Colors.white,
           shape: CircleBorder(),
         ),
         child: IconButton(
-
           icon: ImageIcon(
             AssetImage("images/Signature.png"),
           ),
           color: Colors.white,
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return SignaturePage();
-             }),
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return SignaturePage();
+              }),
             );
-               },
-
+          },
+        ),
       ),
-
-    ),
     );
   }
-
 }
 
 class EventDetailTopPart extends StatelessWidget {
