@@ -124,69 +124,66 @@ class _DetailPageState extends State<DetailPage> {
                   child: ListView(
                     children: snapshot.data!.docs.map((document) {
                       return Center(
-                        child: Flexible(
-                          child: Container(
-                              margin: const EdgeInsets.all(20.0),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: eventBoxDecoration(),
-                              width: MediaQuery.of(context).size.width / 0.7,
-                              height: MediaQuery.of(context).size.height / 2,
-                              child: Column(children: <Widget>[
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                  child: Text(
-                                      "Program Coordinator: " +
-                                          document['Program Coordinator'],
-                                      style: TextStyle(
-                                          color: Color.fromARGB(179, 0, 30, 70),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 19.0)),
-                                ),
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                  child: Text(
-                                      "Program Host: " +
-                                          document['Program Host'],
-                                      style: TextStyle(
-                                          color: Color.fromARGB(179, 0, 30, 70),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 19.0)),
-                                ),
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                  child: Text(
-                                      "Speakers: " +
-                                          document['Speakers'].toString(),
-                                      style: TextStyle(
-                                          color: Color.fromARGB(179, 0, 30, 70),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 19.0)),
-                                ),
-                                Container(
-                                  margin:
-                                      EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                  child: Text(
-                                      "Place: " +
-                                          document['Address Name'].toString() +
-                                          "\n\n" +
-                                          document['Address1'].toString() +
-                                          "\n" +
-                                          document['Address2'].toString() +
-                                          "\n" +
-                                          document['Address State'].toString() +
-                                          "\n" +
-                                          document['Address City'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Color.fromARGB(255, 10, 0, 54),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 19.0)),
-                                )
-                              ])),
-                        ),
+                        child: Container(
+                            margin: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: eventBoxDecoration(),
+                            width: MediaQuery.of(context).size.width / 0.7,
+                            height: MediaQuery.of(context).size.height / 2,
+                            child: Column(children: <Widget>[
+                              Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                child: Text(
+                                    "Program Coordinator: " +
+                                        document['Program Coordinator'],
+                                    style: TextStyle(
+                                        color: Color.fromARGB(179, 0, 30, 70),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19.0)),
+                              ),
+                              Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                child: Text(
+                                    "Program Host: " + document['Program Host'],
+                                    style: TextStyle(
+                                        color: Color.fromARGB(179, 0, 30, 70),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19.0)),
+                              ),
+                              Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                child: Text(
+                                    "Speakers: " +
+                                        document['Speakers'].toString(),
+                                    style: TextStyle(
+                                        color: Color.fromARGB(179, 0, 30, 70),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19.0)),
+                              ),
+                              Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                child: Text(
+                                    "Place: " +
+                                        document['Address Name'].toString() +
+                                        "\n\n" +
+                                        document['Address1'].toString() +
+                                        "\n" +
+                                        document['Address2'].toString() +
+                                        "\n" +
+                                        document['Address State'].toString() +
+                                        "\n" +
+                                        document['Address City'].toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Color.fromARGB(255, 10, 0, 54),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19.0)),
+                              )
+                            ])),
                       );
                     }).toList(),
                   ));

@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_login_ui/screens/home_screen.dart';
+import 'package:flutter_login_ui/screens/admin_home_screen.dart';
 import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/screens/register_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
@@ -13,10 +14,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _rememberMe = false;
-
+  var isAdmin;
   final _emailForLogin = TextEditingController();
   final _LoginPassword = TextEditingController();
-
+  String mail = "mail";
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,6 +32,24 @@ class _LoginScreenState extends State<LoginScreen> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            onChanged: (value) {
+              setState(() {
+                mail = value;
+                FirebaseFirestore.instance
+                    .collection('Attendees')
+                    .doc(mail)
+                    .get()
+                    .then((DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists) {
+                    Map<String, dynamic> datas =
+                        documentSnapshot.data() as Map<String, dynamic>;
+                    isAdmin = datas['isAdmin'];
+                  } else {
+                    print('Document does not exist on the database');
+                  }
+                });
+              });
+            },
             controller: _emailForLogin,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
@@ -142,11 +161,53 @@ class _LoginScreenState extends State<LoginScreen> {
                   email: _emailForLogin.text, password: _LoginPassword.text)
               .then((value) {
             print("Existing account signed in.");
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EventList()),
-            );
+            if (isAdmin == false) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EventList()),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AdminHome()),
+              );
+            }
           }).onError((error, stackTrace) {
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      backgroundColor: Color(0xFF22577E),
+                      title: Text(
+                        'Wrong Email or Password',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      actions: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: acikmavi,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.all(10.0),
+                                  primary: Colors.white,
+                                  textStyle: const TextStyle(fontSize: 20),
+                                ),
+                                onPressed: () => {
+                                  Navigator.pop(context),
+                                },
+                                child: Text('OK',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    )),
+                              )
+                            ])
+                      ],
+                    ));
             print("Error ${error.toString()}");
           });
         },
