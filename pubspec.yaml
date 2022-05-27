@@ -26,10 +26,14 @@ dependencies:
   # firebase auth and core
   firebase_core: ^1.14.1
   firebase_auth: ^3.3.14
+  firebase_storage:
 
   flutter_svg: ^1.0.3
   signature: ^5.0.0
   hand_signature: ^2.1.1
+  syncfusion_flutter_signaturepad:
+  permission_handler:
+  image_gallery_saver:
  # barcode_scan: any
   qr_flutter: ^4.0.0
   path_provider: ^2.0.9
