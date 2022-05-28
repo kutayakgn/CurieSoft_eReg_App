@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/QRcodePage/QR_scanning.dart';
+import 'package:flutter_login_ui/screens/attendeeNavBar.dart';
 import 'package:flutter_login_ui/screens/event_detail.dart';
 import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
@@ -15,47 +16,21 @@ class EventList extends StatefulWidget {
 }
 
 class EventListScreen extends State<EventList> {
-  Future logOut(BuildContext context) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove('email');
-    pref.remove('isAdmin');
-    FirebaseAuth.instance.signOut();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-  }
-
   static var chosenevent;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: koyumavi,
         elevation: 0.0,
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: ImageIcon(
-              AssetImage("images/QRIcon.png"),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return ScanPage();
-                }),
-              );
-            },
-          )
-        ],
-        leading: InkWell(
-          child: Icon(Icons.logout),
-          onTap: () {
-            logOut(context);
-          },
+        leading: Builder(
+          builder: (context) => // Ensure Scaffold is in context
+              IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () => Scaffold.of(context).openDrawer()),
         ),
       ),
       body: Column(
@@ -129,35 +104,56 @@ class _ListPageState extends State<_ListPage> {
     return Column(
       children: [
         Container(
-          alignment: Alignment.center,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          width: 350,
-          child: TextField(
-            onChanged: (value) {
-              setState(() {
-                searchText = value;
-                print(value);
-              });
-            },
-            controller: _searchController,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
-              color: Colors.white,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 12.0),
-              prefixIcon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              hintText: 'Search Event',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
+            alignment: Alignment.centerLeft,
+            decoration: kBoxDecorationStyle,
+            height: 60.0,
+            width: 350,
+            child: Row(
+              children: [
+                Container(
+                  width: 290,
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        searchText = value;
+                        print(value);
+                      });
+                    },
+                    controller: _searchController,
+                    keyboardType: TextInputType.text,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'OpenSans',
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(top: 12.0),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      hintText: 'Search Event',
+                      hintStyle: kHintTextStyle,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  iconSize: 40,
+                  icon: ImageIcon(
+                    AssetImage("images/QRIcon.png"),
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return ScanPage();
+                      }),
+                    );
+                  },
+                )
+              ],
+            )),
         SingleChildScrollView(
           child: Container(
             child: StreamBuilder<QuerySnapshot>(

@@ -1,17 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/admin_event_detail.dart';
-import 'package:flutter_login_ui/screens/QRcodePage/QR_scanning.dart';
-import 'package:flutter_login_ui/screens/event_detail.dart';
 import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utilities/CustomShapeClipper.dart';
-import 'QRcodePage/QR_main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AdminHome extends StatefulWidget {
   @override
@@ -39,34 +33,12 @@ class AdminHomeScreen extends State<AdminHome> {
       appBar: AppBar(
         backgroundColor: koyumavi,
         elevation: 0.0,
-        title: Text(
-          "Admin Panel",
-          style: TextStyle(
-            color: Colors.white,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: ImageIcon(
-              AssetImage("images/QRIcon.png"),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return ScanPage();
-                }),
-              );
-            },
-          )
-        ],
-        leading: InkWell(
-          child: Icon(Icons.logout),
-          onTap: () {
-            logOut(context);
-          },
+        leading: Builder(
+          builder: (context) => // Ensure Scaffold is in context
+              IconButton(
+                  icon: Icon(Icons.person),
+                  onPressed: () => Scaffold.of(context).openDrawer()),
         ),
       ),
       body: Column(

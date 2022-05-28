@@ -37,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onChanged: (value) {
               setState(() {
                 mail = value;
+
                 FirebaseFirestore.instance
                     .collection('Attendees')
                     .doc(mail)

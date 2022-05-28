@@ -55,6 +55,7 @@ flutter:
    - assets/logos/google.jpg
    - images/QRIcon.png
    - images/Signature.png
+   - images/forest.jpg
 
 
   fonts:
