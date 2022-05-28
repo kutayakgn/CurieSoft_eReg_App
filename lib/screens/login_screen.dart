@@ -14,11 +14,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   bool _rememberMe = false;
   var isAdmin;
   final _emailForLogin = TextEditingController();
   final _LoginPassword = TextEditingController();
   String mail = "mail";
+
+  Future<void> resetPW(String email) async {
+    print(email);
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -265,6 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController email = new TextEditingController();
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -321,6 +329,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
                       _buildSignupBtn(),
+                      TextButton(
+                          onPressed: ()=>{resetPW(_emailForLogin.text)},
+                          child: const Text("Forgot Password")
+                      ),
                     ],
                   ),
                 ),
@@ -331,4 +343,5 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
 }

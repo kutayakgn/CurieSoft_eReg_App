@@ -12,6 +12,7 @@ class resetPW extends StatefulWidget {
 
 class resetPassword extends State<resetPW> {
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +45,13 @@ class _bodyResetPW extends StatefulWidget {
 }
 
 class _bbodyresetPW extends State<_bodyResetPW> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void _showScaffold(String message) {
+    _scaffoldKey.currentState!.showSnackBar(SnackBar(
+      content: Text(message),
+    ));
+  }
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
 
@@ -53,8 +61,30 @@ class _bbodyresetPW extends State<_bodyResetPW> {
     TextEditingController Password1 = new TextEditingController();
     TextEditingController Password2 = new TextEditingController();
 
+    savePW(String pw1, String pw2) async {
+      User? user = _firebaseAuth.currentUser;
+        if(pw1.compareTo(pw2) == 0){
+          user?.updatePassword(pw1);
+
+        }
+
+
+    }
+
+    void showDefaultSnackbar(BuildContext context,String text) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(text),
+          action: SnackBarAction(
+            label: 'Close',
+            onPressed: () {},
+          ),
+        ),
+      );
+    }
 
     return Container(
+        key: _scaffoldKey,
         padding: const EdgeInsets.all(20.0),
         child: Column (
 
@@ -76,12 +106,21 @@ class _bbodyresetPW extends State<_bodyResetPW> {
             ),
             SizedBox(height: 10),
             TextButton(
-                onPressed: ()=>{savePW(emmail!)},
+                onPressed: ()=>{
+                    savePW(Password1.text,Password2.text),
+                    if(Password1.text.compareTo(Password2.text) == 0){
+                      showDefaultSnackbar(context,"Password updated succesfully."),
+                    }
+                    else{
+                      showDefaultSnackbar(context,"Please enter same password text."),
+                    }
+                },
                 child: const Text("Save PW")
             ),
 
 
-   ],
+
+          ],
      ),
 
       );
@@ -92,5 +131,5 @@ class _bbodyresetPW extends State<_bodyResetPW> {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
-  savePW(String s) {}
+
 }

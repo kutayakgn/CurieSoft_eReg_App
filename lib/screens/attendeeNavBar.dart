@@ -113,6 +113,10 @@ class _NavBar extends State<NavBar> {
             leading: Icon(Icons.exit_to_app),
             onTap: () {
               logOut(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+           );
             },
           ),
         ],
