@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/screens/resetPW.dart';
@@ -15,7 +16,12 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBar extends State<NavBar> {
+
+  final String _collection = 'collectionName';
+
+
   var currentemail;
+
   Future getInfo(BuildContext context) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     currentemail = preferences.getString('email');
@@ -33,58 +39,36 @@ class _NavBar extends State<NavBar> {
     final uid = user?.uid;
     User? useremail = auth.currentUser;
     String? emmail = useremail?.email;
-    String emails = emmail.toString();
+    String fullname = "";
+
     Future logOut(BuildContext context) async {
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.remove('email');
       pref.remove('isAdmin');
       FirebaseAuth.instance.signOut();
     }
-    //Navigator.push(
-    //  context,
-    //  MaterialPageRoute(builder: (context) => LoginScreen()),
-    //);
-    final dbRef = FirebaseFirestore.instance
-        .collection("Attendees")
-        .doc(emmail);
-    var dbRef2 = FirebaseFirestore.instance
-        .collection("Attendees")
-        .doc(emmail).get().toString();
-    print(dbRef2);
-    CollectionReference allCollection =
-    FirebaseFirestore.instance.collection('Attendees');
-    Future<String> getSpecie(String petId) async {
-      DocumentReference documentReference = allCollection.doc(emmail);
-      String specie = "";
-      await documentReference.get().then((snapshot) {
 
-        //specie = snapshot.data.toString();
-      });
-      return specie;
-    }
+    FirebaseFirestore.instance
+        .collection('Attendees')
+        .doc('$emmail')
+        .get()
+        .then((DocumentSnapshot doc) {
+      print(doc.get('Full Name')) ;
+      String fullname1 = '' + doc.get('Full Name');
+      print(fullname1);
+      fullname = fullname1.toString();
+      print(fullname);
+    });
 
-    final docRef = FirebaseFirestore.instance.collection("Attendees").doc(emmail);
-    docRef.get().then(
-          (DocumentSnapshot doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        Iterable dataa = data.values;
-        // ...
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
 
-    print(getSpecie("any"));
-    String any = getSpecie("any").toString();
-    List<DocumentSnapshot> documents = [];
-    DocumentReference allDoc = FirebaseFirestore.instance.collection('Attendees').doc(emmail);
-   // Future<DocumentSnapshot<Object?>> FullName = allDoc.get("Full Name");
     return Drawer(
+
       child: ListView(
         // Remove padding
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text("Sueda Bilen"),
+            accountName: Text(fullname),
             accountEmail: Text(emmail!),
             decoration: BoxDecoration(
               color: Colors.blue,
