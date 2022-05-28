@@ -144,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Wellcome \nTo \nCurieSoft Events",
+                        "Welcome \nTo \nCMGO Events",
                         style: TextStyle(
                             fontSize: 35,
                             color: Colors.white,

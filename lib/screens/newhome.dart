@@ -69,7 +69,7 @@ class EventListTopPart extends State<EventListTop> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "CurieSoft Events",
+              "CMGO Events",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
