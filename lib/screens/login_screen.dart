@@ -6,6 +6,7 @@ import 'package:flutter_login_ui/screens/admin_home_screen.dart';
 import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/screens/register_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailForLogin = TextEditingController();
   final _LoginPassword = TextEditingController();
   String mail = "mail";
+
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,11 +157,21 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
+        onPressed: () async {
+          final SharedPreferences preferences =
+              await SharedPreferences.getInstance();
           FirebaseAuth.instance
               .signInWithEmailAndPassword(
                   email: _emailForLogin.text, password: _LoginPassword.text)
               .then((value) {
+            if (_rememberMe == true) {
+              print(isAdmin.toString());
+              print(_emailForLogin.text);
+              preferences.setString('email', _emailForLogin.text);
+              preferences.setString('isAdmin', isAdmin.toString());
+              print(preferences.getString('email'));
+              print(preferences.getString('isAdmin'));
+            }
             print("Existing account signed in.");
             if (isAdmin == false) {
               Navigator.push(

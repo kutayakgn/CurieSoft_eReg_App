@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/QRcodePage/QR_scanning.dart';
 import 'package:flutter_login_ui/screens/event_detail.dart';
+import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../utilities/CustomShapeClipper.dart';
 import 'QRcodePage/QR_main.dart';
 
@@ -12,6 +15,18 @@ class EventList extends StatefulWidget {
 }
 
 class EventListScreen extends State<EventList> {
+  Future logOut(BuildContext context) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove('email');
+    pref.remove('isAdmin');
+    FirebaseAuth.instance.signOut();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
   static var chosenevent;
   @override
   Widget build(BuildContext context) {
@@ -37,9 +52,9 @@ class EventListScreen extends State<EventList> {
           )
         ],
         leading: InkWell(
-          child: Icon(Icons.arrow_back),
+          child: Icon(Icons.logout),
           onTap: () {
-            Navigator.pop(context);
+            logOut(context);
           },
         ),
       ),
