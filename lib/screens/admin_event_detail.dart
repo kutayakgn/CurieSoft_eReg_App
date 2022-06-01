@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/admin_attendeelist.dart';
+import 'package:flutter_login_ui/screens/admin_event_QR.dart';
 import 'package:flutter_login_ui/screens/event_detail.dart';
 
 import '../../utilities/constants.dart';
@@ -65,7 +66,10 @@ class AttendeeListButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(5), color: koyumavi),
         child: TextButton.icon(
           onPressed: () {
-            // Respond to button press
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdminEventQR()),
+            );
           },
           icon: Icon(
             Icons.qr_code,

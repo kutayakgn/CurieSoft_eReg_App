@@ -40,12 +40,26 @@ class _AttendeeListPage extends StatefulWidget {
 }
 
 class _AttendeeListPageState extends State<_AttendeeListPage> {
+  var changing;
   CollectionReference? allcoll;
   List<DocumentSnapshot> documents = [];
   _AttendeeListPageState() {
     CollectionReference allCollection =
         FirebaseFirestore.instance.collection('Events');
-    allcoll = allCollection.doc('1').collection('AllAttendees');
+    allcoll = allCollection
+        .doc(EventListScreen.choseneventid)
+        .collection('AllAttendees');
+  }
+  Future<void> updateToFalse() async {
+    await allcoll!.doc(changing).update({
+      'isJoin': false,
+    });
+  }
+
+  Future<void> updateToTrue() async {
+    await allcoll!.doc(changing).update({
+      'isJoin': true,
+    });
   }
 
   void initState() {
@@ -121,21 +135,44 @@ class _AttendeeListPageState extends State<_AttendeeListPage> {
                       return Divider();
                     },
                     itemBuilder: (BuildContext context, int index) {
+                      IconData? iconn;
+                      if (documents[index]['isJoin'] == true)
+                        iconn = Icons.check;
+                      else if (documents[index]['isJoin'] == false)
+                        iconn = Icons.close;
+
                       return GestureDetector(
-                        onTap: () {},
+                        onDoubleTap: () async {
+                          changing = documents[index].id;
+                          if (documents[index]['isJoin'] == true)
+                            await updateToFalse();
+                          else
+                            updateToTrue();
+                        },
                         child: Container(
-                          margin: const EdgeInsets.fromLTRB(20.0, 10, 20, 0),
-                          padding: const EdgeInsets.all(10.0),
-                          alignment: Alignment.center,
-                          decoration: myBoxDecoration(),
-                          width: MediaQuery.of(context).size.width / 0.7,
-                          height: MediaQuery.of(context).size.height / 10,
-                          child: Text(documents[index]['Full Name'],
-                              style: TextStyle(
-                                  color: Color.fromARGB(179, 0, 30, 70),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19.0)),
-                        ),
+                            margin: const EdgeInsets.fromLTRB(20.0, 10, 20, 0),
+                            padding: const EdgeInsets.all(10.0),
+                            alignment: Alignment.center,
+                            decoration: myBoxDecoration(),
+                            width: MediaQuery.of(context).size.width / 0.7,
+                            height: MediaQuery.of(context).size.height / 10,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(documents[index]['Full Name'],
+                                    style: TextStyle(
+                                        color: Color.fromARGB(179, 0, 30, 70),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19.0)),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Icon(
+                                  iconn,
+                                  color: koyumavi,
+                                ),
+                              ],
+                            )),
                       );
                     },
                   ),

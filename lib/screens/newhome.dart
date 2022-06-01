@@ -17,6 +17,7 @@ class EventList extends StatefulWidget {
 
 class EventListScreen extends State<EventList> {
   static var chosenevent;
+  static var choseneventid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,6 +214,8 @@ class _ListPageState extends State<_ListPage> {
                         onTap: () {
                           EventListScreen.chosenevent =
                               documents[index]['Program Topic'];
+                          EventListScreen.choseneventid = documents[index].id;
+                          print(EventListScreen.choseneventid);
                           Navigator.push(
                             context,
                             MaterialPageRoute(

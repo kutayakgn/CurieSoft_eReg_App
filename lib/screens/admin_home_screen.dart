@@ -136,6 +136,8 @@ class _AdminListPageState extends State<_AdminListPage> {
                         onTap: () {
                           EventListScreen.chosenevent =
                               documents[index]['Program Topic'];
+                          EventListScreen.choseneventid = documents[index].id;
+                          print(EventListScreen.choseneventid);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
