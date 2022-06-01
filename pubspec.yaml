@@ -28,6 +28,8 @@ dependencies:
   firebase_auth: ^3.3.14
   firebase_storage:
   shared_preferences:
+  qr_code_scanner:
+
   flutter_svg: ^1.0.3
   signature: ^5.0.0
   hand_signature: ^2.1.1
