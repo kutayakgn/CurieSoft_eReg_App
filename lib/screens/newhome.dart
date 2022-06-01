@@ -69,7 +69,7 @@ class EventListTopPart extends State<EventListTop> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "CurieSoft Events",
+              "CMGO Events",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 30,
@@ -91,7 +91,23 @@ class _ListPage extends StatefulWidget {
   _ListPageState createState() => _ListPageState();
 }
 
+String _email = '';
+
 class _ListPageState extends State<_ListPage> {
+  getcurrentuser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _email = (prefs.getString('currentemail'))!;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getcurrentuser();
+    print("this is executing");
+    print(_email);
+  }
+
   CollectionReference allCollection =
       FirebaseFirestore.instance.collection('Events');
   List<DocumentSnapshot> documents = [];
@@ -166,6 +182,13 @@ class _ListPageState extends State<_ListPage> {
                   ));
                 }
                 documents = streamSnapshot.data!.docs;
+                documents = documents.where((element) {
+                  return element
+                      .get('Katilimci')
+                      .toString()
+                      .toLowerCase()
+                      .contains(_email);
+                }).toList();
                 //todo Documents list added to filterTitle
                 if (searchText.length > 0) {
                   documents = documents.where((element) {
@@ -202,7 +225,7 @@ class _ListPageState extends State<_ListPage> {
                           alignment: Alignment.center,
                           decoration: myBoxDecoration(),
                           width: MediaQuery.of(context).size.width / 0.7,
-                          height: MediaQuery.of(context).size.height / 12,
+                          height: MediaQuery.of(context).size.height / 10,
                           child: Text(documents[index]['Program Topic'],
                               style: TextStyle(
                                   color: Color.fromARGB(179, 0, 30, 70),

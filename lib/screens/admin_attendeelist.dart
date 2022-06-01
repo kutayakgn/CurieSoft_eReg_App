@@ -1,67 +1,56 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_ui/screens/admin_event_detail.dart';
-import 'package:flutter_login_ui/screens/attendeeNavBar.dart';
-import 'package:flutter_login_ui/screens/login_screen.dart';
 import 'package:flutter_login_ui/screens/newhome.dart';
+
 import 'package:flutter_login_ui/utilities/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class AdminHome extends StatefulWidget {
-  @override
-  AdminHomeScreen createState() => AdminHomeScreen();
-}
-
-class AdminHomeScreen extends State<AdminHome> {
-  Future logOut(BuildContext context) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.remove('email');
-    pref.remove('isAdmin');
-    FirebaseAuth.instance.signOut();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-  }
-
-  static var chosenevent;
+class AttendeeList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
-      drawer: NavBar(),
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: koyumavi,
-        elevation: 0.0,
-        centerTitle: true,
-        leading: Builder(
-          builder: (context) => // Ensure Scaffold is in context
-              IconButton(
-                  icon: Icon(Icons.person),
-                  onPressed: () => Scaffold.of(context).openDrawer()),
+        appBar: AppBar(
+          backgroundColor: koyumavi,
+          elevation: 0.0,
+          centerTitle: true,
+          leading: InkWell(
+            child: Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
-      ),
-      body: Column(
-        children: <Widget>[
-          EventListTop(),
-          _AdminListPage(),
-        ],
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 30,
+              ),
+              _AttendeeListPage(),
+            ],
+          ),
+        ));
   }
 }
 
-class _AdminListPage extends StatefulWidget {
+class _AttendeeListPage extends StatefulWidget {
   @override
-  _AdminListPageState createState() => _AdminListPageState();
+  _AttendeeListPageState createState() => _AttendeeListPageState();
 }
 
-class _AdminListPageState extends State<_AdminListPage> {
-  CollectionReference allCollection =
-      FirebaseFirestore.instance.collection('Events');
+class _AttendeeListPageState extends State<_AttendeeListPage> {
+  CollectionReference? allcoll;
   List<DocumentSnapshot> documents = [];
+  _AttendeeListPageState() {
+    CollectionReference allCollection =
+        FirebaseFirestore.instance.collection('Events');
+    allcoll = allCollection.doc('1').collection('AllAttendees');
+  }
+
+  void initState() {
+    super.initState();
+  }
 
   TextEditingController _searchController = TextEditingController();
   String searchText = '';
@@ -94,7 +83,7 @@ class _AdminListPageState extends State<_AdminListPage> {
                 Icons.search,
                 color: Colors.white,
               ),
-              hintText: 'Search Event',
+              hintText: 'Search Attendee',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -102,7 +91,7 @@ class _AdminListPageState extends State<_AdminListPage> {
         SingleChildScrollView(
           child: Container(
             child: StreamBuilder<QuerySnapshot>(
-              stream: allCollection.snapshots(),
+              stream: allcoll!.snapshots(),
               builder: (ctx, streamSnapshot) {
                 if (streamSnapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -116,7 +105,7 @@ class _AdminListPageState extends State<_AdminListPage> {
                 if (searchText.length > 0) {
                   documents = documents.where((element) {
                     return element
-                        .get('Program Topic')
+                        .get('Full Name')
                         .toString()
                         .toLowerCase()
                         .contains(searchText.toLowerCase());
@@ -133,15 +122,7 @@ class _AdminListPageState extends State<_AdminListPage> {
                     },
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () {
-                          EventListScreen.chosenevent =
-                              documents[index]['Program Topic'];
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AdminEventDetailScreen()),
-                          );
-                        },
+                        onTap: () {},
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(20.0, 10, 20, 0),
                           padding: const EdgeInsets.all(10.0),
@@ -149,7 +130,7 @@ class _AdminListPageState extends State<_AdminListPage> {
                           decoration: myBoxDecoration(),
                           width: MediaQuery.of(context).size.width / 0.7,
                           height: MediaQuery.of(context).size.height / 10,
-                          child: Text(documents[index]['Program Topic'],
+                          child: Text(documents[index]['Full Name'],
                               style: TextStyle(
                                   color: Color.fromARGB(179, 0, 30, 70),
                                   fontWeight: FontWeight.bold,
@@ -166,17 +147,4 @@ class _AdminListPageState extends State<_AdminListPage> {
       ],
     );
   }
-}
-
-BoxDecoration myBoxDecoration() {
-  return BoxDecoration(
-    color: Color.fromARGB(255, 197, 223, 245),
-    border: Border.all(
-      width: 3.0,
-      color: Color.fromARGB(255, 197, 223, 245),
-    ),
-    borderRadius: BorderRadius.all(
-        Radius.circular(10.0) //                 <--- border radius here
-        ),
-  );
 }

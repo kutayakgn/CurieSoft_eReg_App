@@ -12,7 +12,7 @@ void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var email = preferences.getString('email');
   var isAdmin = preferences.getString('isAdmin');
-
+  print(preferences.getString('currentemail'));
   runApp(MaterialApp(
     title: 'CurieSoft e-Reg App',
     debugShowCheckedModeBanner: false,

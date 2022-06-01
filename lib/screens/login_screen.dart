@@ -14,11 +14,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   bool _rememberMe = false;
   var isAdmin;
   final _emailForLogin = TextEditingController();
   final _LoginPassword = TextEditingController();
   String mail = "mail";
+
+  Future<void> resetPW(String email) async {
+    print(email);
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 
   Widget _buildEmailTF() {
     return Column(
@@ -151,13 +157,10 @@ class _LoginScreenState extends State<LoginScreen> {
               .signInWithEmailAndPassword(
                   email: _emailForLogin.text, password: _LoginPassword.text)
               .then((value) {
+            preferences.setString('currentemail', _emailForLogin.text);
             if (_rememberMe == true) {
-              print(isAdmin.toString());
-              print(_emailForLogin.text);
               preferences.setString('email', _emailForLogin.text);
               preferences.setString('isAdmin', isAdmin.toString());
-              print(preferences.getString('email'));
-              print(preferences.getString('isAdmin'));
             }
             print("Existing account signed in.");
             if (isAdmin == false) {
@@ -265,6 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController email = new TextEditingController();
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -321,6 +325,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
                       _buildSignupBtn(),
+                      TextButton(
+                          onPressed: () => {resetPW(_emailForLogin.text)},
+                          child: const Text("Forgot Password")),
                     ],
                   ),
                 ),

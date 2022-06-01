@@ -40,12 +40,8 @@ class _MyAppState extends State<SignaturePage> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return EventDetailScreen();
-          }),
-        );
+        Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
 

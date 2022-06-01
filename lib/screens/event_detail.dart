@@ -17,7 +17,10 @@ class EventDetailScreen extends StatelessWidget {
           leading: InkWell(
             child: Icon(Icons.arrow_back),
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EventList()),
+              );
             },
           ),
         ),
