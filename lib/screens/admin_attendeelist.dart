@@ -127,7 +127,7 @@ class _AttendeeListPageState extends State<_AttendeeListPage> {
                 }
                 return Container(
                   alignment: Alignment.center,
-                  height: 440,
+                  height: MediaQuery.of(context).size.height,
                   margin: EdgeInsets.all(20),
                   child: ListView.separated(
                     itemCount: documents.length,

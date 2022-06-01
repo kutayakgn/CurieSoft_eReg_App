@@ -154,21 +154,6 @@ class _ListPageState extends State<_ListPage> {
                     ),
                   ),
                 ),
-                IconButton(
-                  iconSize: 40,
-                  icon: ImageIcon(
-                    AssetImage("images/QRIcon.png"),
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) {
-                        return ScanPage();
-                      }),
-                    );
-                  },
-                )
               ],
             )),
         SingleChildScrollView(

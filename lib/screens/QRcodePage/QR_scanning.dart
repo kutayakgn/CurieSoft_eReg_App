@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter/material.dart';
@@ -79,13 +80,12 @@ class _QRViewExampleState extends State<QRViewExample> {
   QRcodelink() async {
     final _firestore = await FirebaseFirestore.instance
         .collection('Events')
-        .doc('1')
+        .doc(EventListScreen.choseneventid)
         .get();
 
     String QRlink = _firestore['QR Link'];
     print(QRlink);
-     if(result!.code.toString() == QRlink) {
-
+    if (result!.code.toString() == QRlink) {
       print(result!.code.toString());
       Navigator.push(
         context,
@@ -95,8 +95,6 @@ class _QRViewExampleState extends State<QRViewExample> {
       );
     }
   }
-
-
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -129,7 +127,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                 children: <Widget>[
                   if (result != null)
                     //Text('You will be redirected to eReg-App')
-                  //Text('Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                    //Text('Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                     QRcodelink()
                   else
                     const Text(

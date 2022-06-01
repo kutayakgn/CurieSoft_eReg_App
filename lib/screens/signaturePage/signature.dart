@@ -18,7 +18,7 @@ class SignaturePage extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-  String _email = '';
+String _email = '';
 
 class _MyAppState extends State<SignaturePage> {
   final SignatureController _controller = SignatureController(
@@ -29,15 +29,12 @@ class _MyAppState extends State<SignaturePage> {
     onDrawEnd: () => print('onDrawEnd called!'),
   );
 
-
-
   getcurrentuser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _email = (prefs.getString('currentemail'))!;
     });
   }
-
 
   @override
   void initState() {
@@ -84,7 +81,12 @@ class _MyAppState extends State<SignaturePage> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return EventDetailScreen();
+              }),
+            );
           },
           child: Icon(
             Icons.arrow_back,
@@ -243,9 +245,12 @@ class _MyAppState extends State<SignaturePage> {
 
                             showAlertDialog(context);
 
-                            await FirebaseFirestore.instance.collection('Events').doc(EventListScreen.choseneventid)
-                                .collection('AllAttendees').doc(_email).update({'isJoin' : true});
-
+                            await FirebaseFirestore.instance
+                                .collection('Events')
+                                .doc(EventListScreen.choseneventid)
+                                .collection('AllAttendees')
+                                .doc(_email)
+                                .update({'isJoin': true});
 
                             /*     if (data != null) {
                                 await Navigator.of(context).push(
