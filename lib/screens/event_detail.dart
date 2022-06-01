@@ -5,6 +5,7 @@ import 'package:flutter_login_ui/screens/signaturePage/signature.dart';
 import 'package:flutter_login_ui/utilities/CustomShapeClipper.dart';
 import 'package:signature/signature.dart';
 import '../utilities/constants.dart';
+import 'QRcodePage/QR_scanning.dart';
 
 class EventDetailScreen extends StatelessWidget {
   @override
@@ -55,7 +56,7 @@ class SignButton extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
-                return SignaturePage();
+                return QRViewExample();
               }),
             );
           },

@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter_login_ui/screens/event_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signature/signature.dart';
 
 import '../../utilities/constants.dart';
@@ -15,6 +17,8 @@ class SignaturePage extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
+
+  String _email = '';
 
 class _MyAppState extends State<SignaturePage> {
   final SignatureController _controller = SignatureController(
@@ -25,9 +29,20 @@ class _MyAppState extends State<SignaturePage> {
     onDrawEnd: () => print('onDrawEnd called!'),
   );
 
+
+
+  getcurrentuser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _email = (prefs.getString('currentemail'))!;
+    });
+  }
+
+
   @override
   void initState() {
     super.initState();
+    getcurrentuser();
     _controller.addListener(() => print('Value changed'));
     Firebase.initializeApp().whenComplete(() {
       print("completed");
@@ -227,6 +242,11 @@ class _MyAppState extends State<SignaturePage> {
                                 await taskSnapshot.ref.getDownloadURL();
 
                             showAlertDialog(context);
+
+                            await FirebaseFirestore.instance.collection('Events').doc(EventListScreen.choseneventid)
+                                .collection('AllAttendees').doc(_email).update({'isJoin' : true});
+
+
                             /*     if (data != null) {
                                 await Navigator.of(context).push(
                                   MaterialPageRoute<void>(
