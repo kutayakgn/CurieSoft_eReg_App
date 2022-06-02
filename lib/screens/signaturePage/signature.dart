@@ -52,8 +52,12 @@ class _MyAppState extends State<SignaturePage> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        Navigator.pop(context);
-        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => EventList()),
+        );
+
       },
     );
 
@@ -233,7 +237,7 @@ class _MyAppState extends State<SignaturePage> {
                                 FirebaseStorage.instance;
                             Reference ref = _firebaseStorage
                                 .ref()
-                                .child('${DateTime.now()}.png');
+                                .child('${EventListScreen.choseneventid + _email + DateTime.now()}.png');
                             UploadTask uploadTask = ref.putData(data,
                                 SettableMetadata(contentType: 'image/png'));
                             TaskSnapshot taskSnapshot = await uploadTask

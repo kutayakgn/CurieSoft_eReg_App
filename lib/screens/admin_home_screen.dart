@@ -124,7 +124,8 @@ class _AdminListPageState extends State<_AdminListPage> {
                 }
                 return Container(
                   alignment: Alignment.center,
-                  height: 440,
+                  height: 600
+                  ,
                   margin: EdgeInsets.all(20),
                   child: ListView.separated(
                     itemCount: documents.length,

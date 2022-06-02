@@ -4,6 +4,7 @@ import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/screens/signaturePage/signature.dart';
 import 'package:flutter_login_ui/utilities/CustomShapeClipper.dart';
 import 'package:signature/signature.dart';
+import '../newqrscan.dart';
 import '../utilities/constants.dart';
 import 'QRcodePage/QR_scanning.dart';
 
@@ -56,7 +57,7 @@ class SignButton extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) {
-                return QRViewExample();
+                return QRScanPage();
               }),
             );
           },
