@@ -17,16 +17,16 @@ class _QRScanPageState extends State<QRScanPage> {
   String qrCode = 'Unknown';
 @override
   void initState() {
-    // TODO: implement initState
+  scanQRCode(); // TODO: implement initState
     super.initState();
-    scanQRCode();
+
   }
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(backgroundColor: koyumavi,),
   body: Column(mainAxisAlignment: MainAxisAlignment.center,
     children: [
-    Text('Wrong QR Code Please Try Again', style: TextStyle(color: koyumavi,fontSize: 40),),_buildLoginBtn()
+    _buildLoginBtn()
   ],)
   );
   Future QRcodelink() async {
@@ -39,6 +39,7 @@ class _QRScanPageState extends State<QRScanPage> {
     print(QRlink);
     if (qrCode.toString() == QRlink) {
       print(qrCode.toString());
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) {
@@ -81,7 +82,7 @@ class _QRScanPageState extends State<QRScanPage> {
         ),
         color: Colors.white,
         child: Text(
-          'Start Scanning',
+          'Restart Scanning',
           style: TextStyle(
             color: Color(0xFF527DAA),
             letterSpacing: 1.5,

@@ -237,7 +237,7 @@ class _MyAppState extends State<SignaturePage> {
                                 FirebaseStorage.instance;
                             Reference ref = _firebaseStorage
                                 .ref()
-                                .child('${EventListScreen.choseneventid + _email + DateTime.now()}.png');
+                                .child('${EventListScreen.choseneventid + _email }.png');
                             UploadTask uploadTask = ref.putData(data,
                                 SettableMetadata(contentType: 'image/png'));
                             TaskSnapshot taskSnapshot = await uploadTask
