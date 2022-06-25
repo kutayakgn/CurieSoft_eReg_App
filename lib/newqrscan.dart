@@ -6,8 +6,6 @@ import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:flutter_login_ui/screens/signaturePage/signature.dart';
 import 'package:flutter_login_ui/utilities/constants.dart';
 
-import '../main.dart';
-
 class QRScanPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _QRScanPageState();
@@ -15,20 +13,21 @@ class QRScanPage extends StatefulWidget {
 
 class _QRScanPageState extends State<QRScanPage> {
   String qrCode = 'Unknown';
-@override
+  @override
   void initState() {
-  scanQRCode(); // TODO: implement initState
+    scanQRCode(); // TODO: implement initState
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(backgroundColor: koyumavi,),
-  body: Column(mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    _buildLoginBtn()
-  ],)
-  );
+      appBar: AppBar(
+        backgroundColor: koyumavi,
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [_buildLoginBtn()],
+      ));
   Future QRcodelink() async {
     final _firestore = await FirebaseFirestore.instance
         .collection('Events')
@@ -47,8 +46,8 @@ class _QRScanPageState extends State<QRScanPage> {
         }),
       );
     }
-
   }
+
   Future<void> scanQRCode() async {
     try {
       final qrCode = await FlutterBarcodeScanner.scanBarcode(
@@ -68,14 +67,16 @@ class _QRScanPageState extends State<QRScanPage> {
       qrCode = 'Failed to get platform version.';
     }
   }
+
   Widget _buildLoginBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: ()  {scanQRCode();},
-
+        onPressed: () {
+          scanQRCode();
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -94,4 +95,4 @@ class _QRScanPageState extends State<QRScanPage> {
       ),
     );
   }
-  }
+}

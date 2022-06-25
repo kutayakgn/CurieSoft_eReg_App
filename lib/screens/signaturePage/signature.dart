@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_login_ui/screens/feedback.dart';
 import 'package:flutter_login_ui/screens/newhome.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +55,8 @@ class _MyAppState extends State<SignaturePage> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => EventList()),
+          MaterialPageRoute(builder: (context) => FeedbackDialog()),
         );
-
       },
     );
 
@@ -235,9 +234,8 @@ class _MyAppState extends State<SignaturePage> {
                             File.fromRawPath(data!);
                             final FirebaseStorage _firebaseStorage =
                                 FirebaseStorage.instance;
-                            Reference ref = _firebaseStorage
-                                .ref()
-                                .child('${EventListScreen.choseneventid + _email }.png');
+                            Reference ref = _firebaseStorage.ref().child(
+                                '${EventListScreen.choseneventid + _email}.png');
                             UploadTask uploadTask = ref.putData(data,
                                 SettableMetadata(contentType: 'image/png'));
                             TaskSnapshot taskSnapshot = await uploadTask
